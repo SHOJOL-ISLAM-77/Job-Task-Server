@@ -7,12 +7,15 @@ const { MongoClient, ServerApiVersion } = require("mongodb");
 const port = process.env.PORT || 7000;
 
 // middleware
-const corsOptions = {
-  origin: ["http://localhost:5173", "http://localhost:5174"],
-  credentials: true,
-  optionSuccessStatus: 200,
-};
-app.use(cors(corsOptions));
+app.use(
+    cors({
+      origin: [
+        "http://localhost:5173",
+        // "https://job-task77.web.app",
+      ],
+      credentials: true
+    })
+  );
 app.use(express.json());
 
 const storage = multer.diskStorage({
@@ -39,7 +42,7 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    await client.connect();
+    // await client.connect();
 
     const JobTaskCollections = client.db("JobTaskDB").collection("TaskApis");
     const JobTaskCollection = client.db("JobTaskDB").collection("TaskApi");
@@ -83,10 +86,10 @@ async function run() {
       res.json(result);
     });
 
-    await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
+    // await client.db("admin").command({ ping: 1 });
+    // console.log(
+    //   "Pinged your deployment. You successfully connected to MongoDB!"
+    // );
   } finally {
     // await client.close();
   }
